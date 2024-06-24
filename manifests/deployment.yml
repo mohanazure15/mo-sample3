@@ -1,0 +1,19 @@
+apiVersion : apps/v1
+kind: Deployment
+metadata:
+  name: mohanazuremosample 
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mohanazuremosample
+  template:
+    metadata:
+      labels:
+        app: mohanazuremosample 
+    spec:
+      containers:
+        - name: mohanazuremosample 
+          image: testmo1containerregistry.azurecr.io/mohanazuremosample
+          ports:
+          - containerPort: 8080
