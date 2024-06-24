@@ -19,7 +19,7 @@ variables:
   imagePullSecret: 'testmo1containerregistryee49-auth'
 
   # Agent VM image name
-  vmImageName: 'windows-latest'
+  vmImageName: 'ubuntu-latest'
 
   # Name of the new namespace being created to deploy the PR changes.
   k8sNamespaceForPR: 'review-app-$(System.PullRequest.PullRequestId)'
@@ -33,7 +33,7 @@ stages:
       - task: AzureCLI@2
         inputs:
          azureSubscription: 'Pay as you go(640544e6-f8e1-43c7-9e73-049d9c03f187)'
-         scriptType: 'batch'
+         scriptType: 'pscore'
          scriptLocation: 'inlineScript'
          inlineScript: |
           az group create --name testmo1-rg --location southindia
