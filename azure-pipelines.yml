@@ -25,6 +25,26 @@ variables:
   k8sNamespaceForPR: 'review-app-$(System.PullRequest.PullRequestId)'
 
 stages:
+- stage: Infra
+  displayName: Azure Infra Deploy
+  jobs:
+    - job: AzCLI
+      steps:
+      - task: AzureCLI@2
+        inputs:
+         azureSubscription: 'Pay as you go(640544e6-f8e1-43c7-9e73-049d9c03f187)'
+         scriptType: 'batch'
+         scriptLocation: 'inlineScript'
+         inlineScript: |
+          az group create --name testmo1-rg --location southindia
+          az acr create --resource-group testmo1-rg --name testmo1containerregistry --sku Basic  
+          az aks create `
+          --resource-group testmo1-rg `
+          --name myapp `
+          --node-count 1 `
+          --enable-addons monitoring `
+          --generate-ssh-keys
+
 - stage: Build
   displayName: Build stage
   jobs:
