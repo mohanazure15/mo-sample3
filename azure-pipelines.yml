@@ -14,7 +14,7 @@ variables:
   dockerRegistryServiceConnection: '13065a79-1680-4b12-b489-3038848fdbab'
   imageRepository: 'mo-sample3'
   containerRegistry: 'testmo1containerregistry.azurecr.io'
-  dockerfilePath: '**/Dockerfile'
+  dockerfilePath: '$(Build.SourcesDirectory)/app/Dockerfile'
   tag: '$(Build.BuildId)'
   imagePullSecret: 'testmo1containerregistryee49-auth'
 
@@ -59,7 +59,7 @@ stages:
         containerRegistry: 'testmo1containerregistry'
         repository: 'mo-sample3'
         command: 'buildAndPush'
-        Dockerfile: 'app/Dockerfile'
+        Dockerfile: $(dockerfilePath)
 
     - upload: manifests
       artifact: manifests
