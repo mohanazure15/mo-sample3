@@ -59,7 +59,7 @@ stages:
         containerRegistry: 'testmo1containerregistry'
         repository: 'mo-sample3'
         command: 'buildAndPush'
-        Dockerfile: '**/Dockerfile'
+        Dockerfile: 'app/Dockerfile'
 
     - upload: manifests
       artifact: manifests
