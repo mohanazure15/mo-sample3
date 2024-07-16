@@ -54,15 +54,16 @@ stages:
     pool:
       vmImage: $(vmImageName)
     steps:
+    - task: DockerInstaller@0
+      inputs:
+        dockerVersion: '17.09.0-ce'
+
     - task: Docker@2
       inputs:
         containerRegistry: 'testmo1containerregistry'
-        repository: 'mo-sample3'
+        repository: $(imageRepository)
         command: 'buildAndPush'
         Dockerfile: $(dockerfilePath)
-
-    - upload: manifests
-      artifact: manifests
 
 - stage: Deploy
   displayName: Deploy stage
