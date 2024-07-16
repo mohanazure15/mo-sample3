@@ -18,6 +18,7 @@ variables:
   tag: '$(Build.BuildId)'
   imagePullSecret: 'testmo1containerregistryee49-auth'
 
+
   # Agent VM image name
   vmImageName: 'ubuntu-latest'
 
@@ -45,6 +46,36 @@ stages:
           --enable-addons monitoring `
           --generate-ssh-keys
           az acr login --name testmo1containerregistry
+
+- stage: ConnectionCreate
+  displayName: Service Connection Creation
+  jobs:
+    - job: AzCLI
+      steps:
+        - task: AzureCLI@2
+          inputs:
+            azureSubscription: 'Pay as you go(640544e6-f8e1-43c7-9e73-049d9c03f187)'
+            scriptType: 'pscore'
+            scriptLocation: 'inlineScript'
+            inlineScript: 
+              $pat = "Amay@0902"
+              $devopsOrg = "https://dev.azure.com/mohanazure15/"
+              $devopsPrj = "azDevOpsPractice"
+              $configJSON = "acr-srv-connection.json"
+              $dockersrvconn = "AM-ACR-Srv-Connection"
+
+
+              $env:AZURE_DEVOPS_EXT_PAT = $pat
+
+              az devops configure --defaults organization=$devopsOrg project=$devopsPrj
+
+              az devops service-endpoint create --service-endpoint-configuration .\$configJSON
+
+              $srvEndpointID = az devops service-endpoint list --query "[?name=='$dockersrvconn'].id" -o tsv
+              az devops service-endpoint update --id $srvEndpointID --enable-for-all
+      
+        
+      
 
 - stage: Build
   displayName: Build stage 2
